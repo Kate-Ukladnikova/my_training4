@@ -1,5 +1,5 @@
 # Tемa "Блокировки и обработка ошибок"
-# Надо своить блокировки потоков, используя объекты класса Lock и его методы.
+# Надо освоить блокировки потоков, используя объекты класса Lock и его методы.
 # Задача "Банковские операции":
 
 import threading
@@ -15,15 +15,15 @@ class Bank:
         lock.acquire()
         for rand in range(0,100):
             random_number = randint(50,500)
-            self.balance += random_number
-            if self.balance >= 500 and lock.locked():
-                self.balance -= random_number
+            temp = self.balance + random_number
+            if temp >= 500 and lock.locked():
                 lock.release()
                 break
-            print(f'Пополнение: {random_number}. Баланс: {self.balance}')
-        time.sleep(0.001)
+            else:
+                self.balance += random_number
+                print(f'Пополнение: {random_number}. Баланс: {self.balance}')
+                time.sleep(0.001)
     def take(self):
-        lock.acquire()
         for rand in range(0,100):
             random_number = randint(50,500)
             print(f'Запрос на {random_number}')
@@ -32,7 +32,7 @@ class Bank:
                 print(f'Снятие: {random_number}. Баланс: {self.balance}')
             else:
                 print("Запрос отклонён, недостаточно средств")
-                lock.release()
+                lock.acquire()
                 break
 bk = Bank()
 # Т.к. методы принимают self, в потоки нужно передать сам объект класса Bank
