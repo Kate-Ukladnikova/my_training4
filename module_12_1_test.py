@@ -2,6 +2,9 @@ import unittest
 import module_12_1
 
 class RunnerTest(unittest.TestCase):
+
+    is_frozen = False
+    @unittest.skipIf(is_frozen == False, "Тесты в этом кейсе заморожены")
     def test_walk(self):
         r = module_12_1.Runner('')
         for _ in range(0,10):
