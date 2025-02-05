@@ -7,13 +7,15 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 import asyncio
 
-api =""
+api ="7670661418:AAGmtWaBhnN6okgsoCRgdO0Xr-CwaKH0G-Y"
 bot = Bot(token = api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
 start_menu = ReplyKeyboardMarkup(resize_keyboard=True)
+button = KeyboardButton(text = 'Рассчитать')
+button2 = KeyboardButton(text = 'Информация')
 button3 = KeyboardButton(text = 'Купить')
-start_menu.add(button3)
+start_menu.add(button, button2, button3)
 
 kb = InlineKeyboardMarkup(resize_keyboard=True)
 button = InlineKeyboardButton(text = 'Product1', callback_data = 'product_buying')
