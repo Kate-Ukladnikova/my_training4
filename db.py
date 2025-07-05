@@ -15,5 +15,5 @@ engine = create_engine("sqlite:///taskmanager.db", echo = True)
 SessionLocal = sessionmaker(bind=engine)
 
 # Cоздаю базовый класс Base для других моделей:
-class Base( DeclarativeBase):
+class Base(DeclarativeBase):
     pass
