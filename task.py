@@ -1,28 +1,25 @@
-# Домашнее задание по теме "Структура проекта.
-# Маршруты и модели Pydantic."
-# Цель: усвоить основные правила структурирования проекта с
-# использованием FastAPI. Начать написание небольшого "API" для
-# менеджмента задач пользователей.
-# Задача "Основные маршруты".
-# Создадим объект APIRouter, позволяющий разнести маршруты по модулям:
+# Модели баз данных:
 
-from fastapi import APIRouter
-router = APIRouter(prefix="/task", tags=["task"])
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Null
+from sqlalchemy.orm import relationship
+from Modul_17.app.models import *
 
-@router.get("/")
-async def all_tasks():
-    pass
-@router.get("/task_id")
-async def task_by_id():
-    pass
-# к нашему роутеру коннектим блок, который будет позволять добавлять новые элементы:
-@router.post("/create")
-async def create_task():
-    pass
+from Modul_17.app.backend.db import Base
+class Task(Base):
+    __tablename__ = 'tasks'
+    __table_args__ = {'extend_existing': True}
+    id = Column(Integer, primary_key = True, index=True)
+    title = Column(String)
+    content = Column(String)
+    priority = Column(Integer, default = 0)
+    completed = Column(Boolean, default = False)
+    # user_id - целое число, внешний ключ на id из таблицы 'users' (Внешний ключ к users.id),
+    # не NULL, с индексом
+    user_id = Column(Integer, ForeignKey('users.id'), nullable = not Null, index=True)
+    slug = Column(String, unique=True, index=True)
 
-@router.put("/update")
-async def update_task():
-    pass
-@router.delete("/delete")
-async def delete_task():
-    pass
+    user = relationship("User", back_populates="tasks")
+
+from sqlalchemy.schema import CreateTable
+print(CreateTable(Task.__table__))
+

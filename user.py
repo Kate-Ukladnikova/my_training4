@@ -1,20 +1,19 @@
-from fastapi import APIRouter
-router = APIRouter(prefix="/user", tags=["user"])
+# Модель баз данных User:
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Null
+from sqlalchemy.orm import relationship
 
-@router.get("/")
-async def all_users():
-    pass
-@router.get("/user_id")
-async def user_by_id():
-    pass
-# к нашему роутеру коннектим блок, который будет позволять добавлять новые элементы:
-@router.post("/create")
-async def create_user():
-    pass
+from Modul_17.app.backend.db import Base
+class User(Base):
+    __tablename__ = 'users'
+    __table_args__ = {'extend_existing': True}
+    id = Column(Integer, primary_key = True, index=True)
+    username = Column(String)
+    firstname = Column(String)
+    lastname = Column(String)
+    age = Column(Integer)
+    slug = Column(String, unique=True, index=True)
 
-@router.put("/update")
-async def update_user():
-    pass
-@router.delete("/delete")
-async def delete_user():
-    pass
+    tasks = relationship("Task", back_populates="user")
+
+from sqlalchemy.schema import CreateTable
+print(CreateTable(User.__table__))
